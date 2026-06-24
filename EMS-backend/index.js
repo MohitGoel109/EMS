@@ -8,7 +8,12 @@ const loggerMiddleware = require("./middleware/loggerMiddleware");
 
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://ems-bay-seven.vercel.app"
+  ]
+}));
 app.use(express.json());
 
 app.use(loggerMiddleware);
