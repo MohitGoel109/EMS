@@ -121,8 +121,8 @@ VITE_API_URL=http://localhost:5100/employees
 ---
 
 ## 📸 Screenshots
+<img width="1878" height="913" alt="image" src="https://github.com/user-attachments/assets/f69f9270-ea2c-4a82-832f-f33de9fbecd7" />
 
-> Add screenshots of your app here
 
 ---
 
