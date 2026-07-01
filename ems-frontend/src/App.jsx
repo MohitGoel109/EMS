@@ -276,7 +276,7 @@ function App() {
                     <button className="btn-icon btn-edit" onClick={() => startEdit(employee)} title="Edit">
                       ✏️ Edit
                     </button>
-                    <button className="btn-icon btn-delete" onClick={() => deleteEmployee(employee.id)} title="Delete">
+                    <button className="btn-icon btn-delete" onClick={() => deleteEmployee(employee._id)} title="Delete">
                       🗑️ Delete
                     </button>
                   </div>
