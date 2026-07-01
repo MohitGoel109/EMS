@@ -28,7 +28,7 @@ function App() {
     salary: "",
   });
 
-  const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5100/employees";
+  const API_URL = "http://localhost:5100/employees" || import.meta.env.VITE_API_URL;
 
   const showToast = (msg, type = "success") => {
     setToast({ msg, type });
@@ -72,7 +72,7 @@ function App() {
   };
 
   const startEdit = (employee) => {
-    setEditingId(employee.id);
+    setEditingId(employee._id);
     setFormData({
       name: employee.name,
       department: employee.department,
