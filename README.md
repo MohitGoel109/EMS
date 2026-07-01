@@ -1,361 +1,138 @@
-# EMS
-# Employee Management System
+# 👥 Employee Management System (EMS)
 
-# Project Structure
+A full-stack Employee Management System built with **React + Vite** on the frontend and **Node.js + Express** on the backend.
 
-```text
-employee-management
+🔗 **Live Demo:** [https://ems-bay-seven.vercel.app](https://ems-bay-seven.vercel.app)
+
+---
+
+## ✨ Features
+
+- ➕ Add new employees
+- ✏️ Edit existing employee details
+- 🗑️ Delete employees
+- 🔍 Search by name or department
+- 🏷️ Filter by department
+- 👤 Employee count & average salary stats
+- 🌙 Dark / Light mode toggle
+- 🎨 Department color badges
+- 🔔 Toast notifications on actions
+- 📱 Responsive design
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Frontend | React 19, Vite |
+| Backend | Node.js, Express |
+| Styling | Plain CSS (CSS Variables) |
+| Deployment (Frontend) | Vercel |
+| Deployment (Backend) | Render |
+
+---
+
+## 📁 Project Structure
+
+```
+EMS/
+├── ems-frontend/        # React + Vite frontend
+│   ├── src/
+│   │   ├── App.jsx      # Main component
+│   │   └── index.css    # Global styles
+│   ├── .env             # Local environment variables (not pushed)
+│   └── package.json
 │
-├── server.js
-│
-├── routes
-│   └── employeeRoutes.js
-│
-├── controllers
-│   └── employeeController.js
-│
-├── middleware
-│   └── loggerMiddleware.js
-│
-└── data
-    └── employees.js
+└── EMS-backend/         # Node.js + Express backend
+    ├── controllers/
+    │   └── employeeController.js
+    ├── routes/
+    │   └── employeeRoutes.js
+    ├── middleware/
+    │   └── loggerMiddleware.js
+    ├── data/
+    │   └── employee.js  # In-memory data store
+    └── index.js         # Entry point
 ```
 
 ---
 
-# Step 1: employees.js
+## 🚀 Getting Started Locally
 
-```javascript
-const employees = [
-  {
-    id: 1,
-    name: "Rahul",
-    department: "IT",
-    salary: 50000
-  },
-  {
-    id: 2,
-    name: "Priya",
-    department: "HR",
-    salary: 40000
-  }
-];
+### Prerequisites
+- Node.js v18+
+- npm
 
-module.exports = employees;
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/MohitGoel109/EMS.git
+cd EMS
+```
+
+### 2. Start the Backend
+
+```bash
+cd EMS-backend
+npm install
+npm run dev
+# Runs on http://localhost:5100
+```
+
+### 3. Start the Frontend
+
+```bash
+cd ems-frontend
+npm install
+npm run dev
+# Runs on http://localhost:5173
+```
+
+### 4. Create `.env` in `ems-frontend/`
+
+```
+VITE_API_URL=http://localhost:5100/employees
 ```
 
 ---
 
-# Step 2: loggerMiddleware.js
+## 🌐 API Endpoints
 
-Simple middleware to show students how middleware works.
-
-```javascript
-const loggerMiddleware = (req, res, next) => {
-
-  console.log("Request Method:", req.method);
-  console.log("Request URL:", req.url);
-
-  next();
-
-};
-
-module.exports = loggerMiddleware;
-```
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/employees` | Get all employees |
+| GET | `/employees/:id` | Get employee by ID |
+| POST | `/employees` | Add new employee |
+| PUT | `/employees/:id` | Update employee |
+| DELETE | `/employees/:id` | Delete employee |
 
 ---
 
-# Step 3: employeeController.js
+## 🔧 Deployment
 
-```javascript
-const employees = require("../data/employees");
+| Service | Platform | URL |
+|---|---|---|
+| Frontend | Vercel | https://ems-bay-seven.vercel.app |
+| Backend | Render | https://ems-7kie.onrender.com |
 
-
-// GET ALL EMPLOYEES
-
-const getAllEmployees = (req, res) => {
-
-  res.status(200).json(employees);
-
-};
-
-
-// GET SINGLE EMPLOYEE
-
-const getEmployeeById = (req, res) => {
-
-  const id = Number(req.params.id);
-
-  const employee = employees.find(
-    emp => emp.id === id
-  );
-
-  if (!employee) {
-    return res.status(404).json({
-      message: "Employee Not Found"
-    });
-  }
-
-  res.status(200).json(employee);
-
-};
-
-
-// ADD EMPLOYEE
-
-const addEmployee = (req, res) => {
-
-  const { name, department, salary } = req.body;
-
-  const newEmployee = {
-    id: employees.length + 1,
-    name,
-    department,
-    salary
-  };
-
-  employees.push(newEmployee);
-
-  res.status(201).json({
-    message: "Employee Added Successfully",
-    employee: newEmployee
-  });
-
-};
-
-
-// UPDATE EMPLOYEE
-
-const updateEmployee = (req, res) => {
-
-  const id = Number(req.params.id);
-
-  const employee = employees.find(
-    emp => emp.id === id
-  );
-
-  if (!employee) {
-    return res.status(404).json({
-      message: "Employee Not Found"
-    });
-  }
-
-  employee.name =
-    req.body.name || employee.name;
-
-  employee.department =
-    req.body.department || employee.department;
-
-  employee.salary =
-    req.body.salary || employee.salary;
-
-  res.status(200).json({
-    message: "Employee Updated Successfully",
-    employee
-  });
-
-};
-
-
-// DELETE EMPLOYEE
-
-const deleteEmployee = (req, res) => {
-
-  const id = Number(req.params.id);
-
-  const index = employees.findIndex(
-    emp => emp.id === id
-  );
-
-  if (index === -1) {
-    return res.status(404).json({
-      message: "Employee Not Found"
-    });
-  }
-
-  employees.splice(index, 1);
-
-  res.status(200).json({
-    message: "Employee Deleted Successfully"
-  });
-
-};
-
-
-module.exports = {
-  getAllEmployees,
-  getEmployeeById,
-  addEmployee,
-  updateEmployee,
-  deleteEmployee
-};
-```
+> **Note:** The backend uses in-memory storage. Data resets on every server restart. For persistent storage, connect a database like MongoDB Atlas.
 
 ---
 
-# Step 4: employeeRoutes.js
+## 📸 Screenshots
+<img width="1878" height="913" alt="image" src="https://github.com/user-attachments/assets/f69f9270-ea2c-4a82-832f-f33de9fbecd7" />
 
-```javascript
-const express = require("express");
-
-const router = express.Router();
-
-const {
-  getAllEmployees,
-  getEmployeeById,
-  addEmployee,
-  updateEmployee,
-  deleteEmployee
-} = require("../controllers/employeeController");
-
-
-// GET ALL
-
-router.get("/", getAllEmployees);
-
-
-// GET BY ID
-
-router.get("/:id", getEmployeeById);
-
-
-// CREATE
-
-router.post("/", addEmployee);
-
-
-// UPDATE
-
-router.put("/:id", updateEmployee);
-
-
-// DELETE
-
-router.delete("/:id", deleteEmployee);
-
-module.exports = router;
-```
 
 ---
 
-# Step 5: server.js
+## 👨‍💻 Author
 
-```javascript
-const express = require("express");
-
-const app = express();
-
-const employeeRoutes = require("./routes/employeeRoutes");
-
-const loggerMiddleware = require("./middleware/loggerMiddleware");
-
-
-// Middleware
-
-app.use(express.json());
-
-app.use(loggerMiddleware);
-
-
-// Routes
-
-app.use("/employees", employeeRoutes);
-
-
-app.get("/", (req, res) => {
-
-  res.send("Employee Management API Running");
-
-});
-
-
-app.listen(5100, () => {
-
-  console.log("Server Running on Port 5100");
-
-});
-```
+**Mohit Goel**
+- GitHub: [@MohitGoel109](https://github.com/MohitGoel109)
 
 ---
 
-# Testing in Postman
+## 📄 License
 
-## 1. Get All Employees
-
-```http
-GET
-http://localhost:5100/employees
-```
-
----
-
-## 2. Get Employee By ID
-
-```http
-GET
-http://localhost:5100/employees/1
-```
-
----
-
-## 3. Add Employee
-
-```http
-POST
-http://localhost:5100/employees
-```
-
-Body
-
-```json
-{
-  "name": "Aman",
-  "department": "Marketing",
-  "salary": 45000
-}
-```
-
----
-
-## 4. Update Employee
-
-```http
-PUT
-http://localhost:5100/employees/1
-```
-
-Body
-
-```json
-{
-  "salary": 70000
-}
-```
-
----
-
-## 5. Delete Employee
-
-```http
-DELETE
-http://localhost:5100/employees/2
-```
-
----
-
-# Concepts Covered in This Project
-
-| Concept                                       | Covered |
-| --------------------------------------------- | ------- |
-| Express Server                                | ✅       |
-| Routing                                       | ✅       |
-| Route Parameters                              | ✅       |
-| Request Body                                  | ✅       |
-| CRUD Operations                               | ✅       |
-| Middleware                                    | ✅       |
-| MVC Structure                                 | ✅       |
-| Status Codes                                  | ✅       |
-| Postman Testing                               | ✅       |
-| Array Methods (find, findIndex, push, splice) | ✅       |
-
-This is an ideal first backend project because students learn the complete request → middleware → route → controller → response flow without getting distracted by databases or authentication.
+This project is open source and available under the [MIT License](LICENSE).
